@@ -1,8 +1,7 @@
-import userService from '../services/userService';
+import userService from '../services/user';
 
-let handleLoging = async (req, res) => {
-    let email = req.body.email;
-    let password = req.body.password;
+let Login = async (req, res) => {
+    let { email, password } = req.body;
 
     if (!email || !password) {
         return res.status(500).json({
@@ -11,11 +10,7 @@ let handleLoging = async (req, res) => {
         })
     }
 
-    let userData = await userService.handleUserLogin(email, password)
-    //check email exist
-    //password nhap vao ko dung
-    //return userInfor
-    // access_token :JWT json web token
+    let userData = await userService.Login(email, password)
 
     return res.status(200).json({
         errCode: userData.errCode,
@@ -24,8 +19,18 @@ let handleLoging = async (req, res) => {
     })
 }
 
+// Create a new user
+let createuser = async (req, res) => {
+    let message = await userService.create(req.body);
+    return res.status(200).json({
+        errCode: 0,
+        message: message
+    })
+}
+
 
 
 module.exports = {
-    handleLoging: handleLoging
+    Login: Login,
+    createuser: createuser,
 }
