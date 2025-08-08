@@ -1,0 +1,201 @@
+.aba-add{
+            position: fixed;
+            right: 5%;
+            top: 65%;
+            width: 30px;
+            height: 30px;
+            background-color: blue;
+            z-index: 9999;
+            border-radius: 5px;
+            box-shadow: rgba(0, 0, 0, 0.16) 0px 10px 36px 0px, rgba(0, 0, 0, 0.06) 0px 0px 0px 1px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+}
+
+.navi{
+            display: flex;
+            border-bottom: 1px solid gray;
+
+            i{
+
+                margin-right: 5px;
+                
+                color: yellow;
+                &.fa-solid.fa-arrow-left{
+                    color: black;
+                }
+                
+                
+            }
+
+    
+        }
+.aba-item {
+    .content-folder {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        padding: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+    }
+
+    .item-list {
+        margin-top: 10px;
+        list-style: none;
+        font-size: 16px;
+
+        i{
+            color: yellow;
+            font-size: 20px;
+        }
+
+        i.fa-file{
+            color: orange;
+        }
+
+        .list-item-li {
+            margin-bottom: 8px;
+            list-style: none;
+
+            > span {
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .list-thang {
+                margin-top: 5px;
+                padding-left: 20px;
+
+                .list-item-li-li {
+                    margin-bottom: 4px;
+                    list-style: none;
+                    > span {
+                        display: flex;
+                        align-items: center;
+                        gap: 6px;
+                        cursor: pointer;
+                    }
+
+                    .list-file {
+                        margin-top: 4px;
+                        padding-left: 20px;
+
+                        .item-li-li {
+                            display: flex;
+                            align-items: center;
+                            gap: 6px;
+                            margin-bottom: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+.content-list-thuchi{
+        display: block;
+        li{
+            margin-top: 5px;
+            list-style: none;
+            padding: 5px;
+            font-size: 16px;
+            box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+            i{
+                font-size: 18px;
+                color: orange;
+            }
+        }
+}
+
+
+.thuchi-header{
+
+    .fa-arrow-left{
+        margin-right: 5px;
+    }
+}
+
+.list-thichuthang{
+    width: 100%;
+    height: 65%;
+    overflow-y: auto; /* Cuộn dọc */
+
+    table {
+        width: 100%;
+
+        td{
+            padding: 5px;
+
+            &.td-money{
+                text-align: right;
+            }
+        }
+    }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+
+    .modal-content {
+        position: absolute;
+        top: 20%;
+        background-color: #fff;
+        padding: 5px;
+        border-radius: 10px;
+        z-index: 1001;
+        width: 98%;
+        height: max-content;
+
+        .header{
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .form-thuchi{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 5px;
+        }
+
+        .btn-thuchi{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 10px 0;
+
+            span{
+                padding: 5px 7px;
+                background-color: blue;
+                border-radius: 5px;
+                margin-right: 5px ;
+                color: white;
+                font-weight: bold;
+
+                &.huy{
+                    background-color: wheat;
+                    color: black;
+                }
+            }
+        }
+    }
+}
