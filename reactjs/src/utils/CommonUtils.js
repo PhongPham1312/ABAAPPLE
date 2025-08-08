@@ -30,8 +30,20 @@ class CommonUtils {
     };
 
     static formatMoney = (money) => {
-        if (!money) return '0';
-        return parseInt(money, 10).toLocaleString('fr-FR'); // dùng locale có dấu cách
+        // Trường hợp null, undefined, hoặc chuỗi rỗng → trả về "0"
+        if (money === null || money === undefined || money === '') return '0';
+
+        // Bỏ khoảng trắng và ép thành số
+        let num = Number(String(money).replace(/\s+/g, ''));
+
+        // Nếu không phải số thì trả về "0"
+        if (isNaN(num)) return '0';
+
+        // Lấy giá trị tuyệt đối và format có khoảng trắng giữa các nhóm
+        let absFormatted = Math.abs(num).toLocaleString('fr-FR'); // fr-FR dùng dấu cách
+
+        // Nếu âm thì thêm "- " trước số, nếu dương thì trả về số
+        return num < 0 ? `- ${absFormatted}` : absFormatted;
     };
 
     static getCurrentDateFormatted = () => {

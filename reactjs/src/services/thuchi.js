@@ -18,6 +18,17 @@ const getThuchi = (type, month, year) => {
     });
 };
 
-export { createthuchi , getthuchinamthang, getThuchi
-
+const deleteThuchi = (id) => {
+    return axios.delete('/api/delete-thuchi', {
+        data: { id }
+    });
 };
+
+const updateThuchi = (id, data) => {
+    return axios.put('/api/update-thuchi', {
+        id: id,
+        ...data
+    });
+};
+
+export { createthuchi , getthuchinamthang, getThuchi, updateThuchi , deleteThuchi };

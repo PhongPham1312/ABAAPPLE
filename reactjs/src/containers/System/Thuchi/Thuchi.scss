@@ -92,6 +92,7 @@
                             align-items: center;
                             gap: 6px;
                             margin-bottom: 4px;
+                            cursor: pointer;
                         }
                     }
                 }
@@ -120,6 +121,7 @@
 
 
 .thuchi-header{
+    margin-bottom: 10px;
 
     .fa-arrow-left{
         margin-right: 5px;
@@ -140,6 +142,29 @@
             &.td-money{
                 text-align: right;
             }
+
+            &.td-content{
+                text-align: left;
+
+                &:hover .icon-edit{
+                    display: block;
+                }
+
+                .icon-edit{
+                    display: none;
+                    i{
+                        font-size: 12px;
+                        margin-left: 5px;
+
+                        &.fa-pen-to-square{
+                            color: orange;
+                        }
+                        &.fa-trash{
+                            color: red;
+                        }
+                    }
+                }
+            }
         }
     }
 }
@@ -159,10 +184,10 @@
         position: absolute;
         top: 20%;
         background-color: #fff;
-        padding: 5px;
+        padding: 15px;
         border-radius: 10px;
         z-index: 1001;
-        width: 98%;
+        width: 65%;
         height: max-content;
 
         .header{

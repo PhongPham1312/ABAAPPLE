@@ -105,7 +105,7 @@ const getThuChiByTypeAndMonth = (type, month , year) => {
                         [Op.like]: searchPattern
                     }
                 },
-                order: [['ngay', 'DESC']]
+                order: [['ngay', 'ASC']],
             });
             resolve({
                 errCode: 0,
@@ -118,9 +118,85 @@ const getThuChiByTypeAndMonth = (type, month , year) => {
     });
 };
 
+let deleteThuchi = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                resolve({
+                    errCode: 1,
+                    message: 'Missing required parameter: id'
+                });
+                return;
+            }
+
+            let thuchi = await db.Thuchi.findOne({
+                where: { id: id }
+            });
+
+            if (!thuchi) {
+                resolve({
+                    errCode: 2,
+                    message: 'Thuchi not found'
+                });
+                return;
+            }
+
+            await db.Thuchi.destroy({
+                where: { id: id }
+            });
+
+            resolve({
+                errCode: 0,
+                message: 'Thuchi deleted successfully'
+            });
+        } catch (e) {
+            reject(e);
+        }
+    });
+};
+
+let updateThuchi = (id, data) => {
+    return new Promise(async (resolve, reject) => { 
+        try {
+            if (!id || !data) {
+                resolve({
+                    errCode: 1,
+                    message: 'Missing required parameters'
+                });
+                return;
+            }
+
+            let thuchi = await db.Thuchi.findOne({
+                where: { id: id }
+            });
+
+            if (!thuchi) {
+                resolve({
+                    errCode: 2,
+                    message: 'Thuchi not found'
+                });
+                return;
+            }
+
+            await db.Thuchi.update(data, {
+                where: { id: id }
+            });
+
+            resolve({
+                errCode: 0,
+                message: 'Thuchi updated successfully'
+            });
+        } catch (e) {
+            reject(e);
+        }
+    }
+    );
+}
 
 module.exports = {
     createthuchi: createthuchi,
     getYearsAndMonths : getYearsAndMonths,
-    getThuChiByTypeAndMonth: getThuChiByTypeAndMonth
+    getThuChiByTypeAndMonth: getThuChiByTypeAndMonth,
+    deleteThuchi: deleteThuchi,
+    updateThuchi: updateThuchi
 }

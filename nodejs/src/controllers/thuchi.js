@@ -35,9 +35,44 @@ const handleGetThuChi = async (req, res) => {
     }
 };
 
+let deleteThuchi = async (req, res) => {
+    try {
+        const { id } = req.body;
+        if (!id) {
+            return res.status(400).json({
+                errCode: 1,
+                errMessage: 'Missing required parameter: id'
+            });
+        }
+        const result = await thuchi.deleteThuchi(id);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error in deleteThuchi:', error);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Internal Server Error'
+        });
+    }
+};
+
+let updateThuchi = async (req, res) => {
+    try {
+        const result = await thuchi.updateThuchi(req.body.id, req.body);
+        return res.status(200).json(result);
+    } catch (error) {
+        console.error('Error in updateThuchi:', error);
+        return res.status(500).json({
+            errCode: -1,
+            errMessage: 'Internal Server Error'
+        });
+    }
+};
+
 
 module.exports = {
     createthuchi : createthuchi,
     getnamthang: getnamthang,
-    handleGetThuChi: handleGetThuChi
+    handleGetThuChi: handleGetThuChi,
+    deleteThuchi: deleteThuchi,
+    updateThuchi: updateThuchi
 }

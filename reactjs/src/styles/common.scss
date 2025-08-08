@@ -72,7 +72,7 @@
         .aba-add{
             position: fixed;
             right: 5%;
-            top: 65%;
+            top: 60%;
             width: 30px;
             height: 30px;
             background-color: blue;
@@ -88,10 +88,19 @@
     }
 }
 
+
+
 @media (max-width: 768px) {
     .aba-container {
         .aba-content {
             width: 100%;
+
+            .modal {
+                width: 100%;
+                .modal-content{
+                    width: 96%;
+                }
+            }
         }
     }
 }

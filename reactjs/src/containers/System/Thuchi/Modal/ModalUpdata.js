@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import CommonUtils from '../../../../utils/CommonUtils';
-import {createthuchi} from '../../../../services/thuchi';
+import { updateThuchi} from '../../../../services/thuchi';
 
-class ModalAdd extends Component {
+class ModalUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -18,17 +18,14 @@ class ModalAdd extends Component {
 
     async componentDidMount() {
         this.setState({
-            ngayhientai: CommonUtils.getCurrentDateFormatted(),
-            ngay: CommonUtils.formatNgay(CommonUtils.getCurrentDateFormatted())
+            money: this.props.item.money,
+            inputmoney: this.formatNegativeMoney(this.props.item.money),
+            content: this.props.item.content,
+            ngayhientai: this.props.item.ngay,
+            ngay: CommonUtils.formatNgay(this.props.item.ngay)
         })
     }
 
-    // link đến url
-    gotolink = (link) => {
-        if (this.props.history) {
-            this.props.history.push(`/system/${link}`);
-        }
-    };
 
     // định dạng ngày với năm
     formatNgayWithYear(ngay) {
@@ -109,10 +106,11 @@ class ModalAdd extends Component {
     };
 
     // add thu chi
-    handleaddthuchi = async () => {
+    handleupthuchi = async () => {
         if(this.checkValue()) {
-            window.confirm("bạn có chắc muốn thêm thu chi này không?");
-            let res = await createthuchi({
+            window.confirm("bạn có chắc muốn câp nhật thu chi này không?");
+            let id = this.props.item.id
+            let res = await updateThuchi(id ,{
                 ngay: this.state.ngayhientai,
                 content: this.state.content,
                 money: this.state.money,
@@ -120,7 +118,7 @@ class ModalAdd extends Component {
             });
 
             if (res && res.errCode === 0) {
-                this.props.openModalAdd();
+                this.props.onmodleupdate();
                 await this.props.getthuchithang(this.props.type, 
                     this.props.month, this.props.year);
                 this.setState({
@@ -136,12 +134,11 @@ class ModalAdd extends Component {
     }
 
 
-
     render() {
         return (
             <div className='modal'>
                 <div className='modal-content'>
-                    <div className='header'>THÊM THU CHI</div>
+                    <div className='header'>CẬP NHẬT THU CHI</div>
                     {/* form thoogn tin */}
                     <div className='form-thuchi'>
                         <label>ngày</label>
@@ -168,7 +165,7 @@ class ModalAdd extends Component {
                             onChange={(e) => this.handleChangeInput(e, 'money')}
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter') {
-                                this.handleAdd();
+                                    this.handleupthuchi();
                                 }
                             }}
                         />
@@ -176,8 +173,8 @@ class ModalAdd extends Component {
 
                     {/* btn */}
                     <div className='btn-thuchi'>
-                            <span onClick={this.handleaddthuchi} className='them'>thêm</span>
-                            <span onClick={this.props.openModalAdd} className='huy'>hủy</span>
+                            <span onClick={this.handleupthuchi} className='them'>lưu</span>
+                            <span onClick={this.props.onmodleupdate} className='huy'>hủy</span>
                     </div>
                 </div>
 
@@ -190,4 +187,4 @@ class ModalAdd extends Component {
 const mapStateToProps = state => ({});
 const mapDispatchToProps = dispatch => ({});
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalAdd));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ModalUpdate));

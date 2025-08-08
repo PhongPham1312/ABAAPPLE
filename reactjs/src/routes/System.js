@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Redirect, Route, Switch } from 'react-router-dom';
 import Home from '../containers/System/Home';
-import UserManage from '../containers/System/UserManage';
 import Thuchi from '../containers/System/Thuchi/Thuchi';
 import ThuChiThang from '../containers/System/Thuchi/ThuChiThang';
+import nguoidung from '../containers/System/User/nguoidung';
+import khachhang from '../containers/System/User/khachhang';
 
 class System extends Component {
     render() {
@@ -18,6 +19,12 @@ class System extends Component {
                         {/* thu chi */}
                         <Route path="/system/thuchi-manage" component={Thuchi} />
                         <Route path="/system/thuchi/:type/:mount/:year" component={ThuChiThang} />
+
+                        {/* user */}
+                        <Route path="/system/nguoidung" component={nguoidung} />
+                        <Route path="/system/khachhang" component={khachhang} />
+
+                        {/* Redirect to home if no match */}
 
                         <Route component={() => { return (<Redirect to={systemMenuPath} />) }} />
                     </Switch>

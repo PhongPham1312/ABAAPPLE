@@ -5,9 +5,16 @@ import * as actions from "../../store/actions";
 import './Header.scss';
 // assets logo
 import logo from "../../assets/logo.jpg"
+import { withRouter } from 'react-router-dom';
 
 
 class Header extends Component {
+
+    gotolink = (link) => {
+        if (this.props.history) {
+            this.props.history.push(`/system/${link}`);
+        }
+    };
 
     render() {
         const { processLogout } = this.props;
@@ -15,8 +22,8 @@ class Header extends Component {
         return (
             <div className="header-container">
                 {/* logo */}
-                <div className='logo'>
-                    <img src={logo}/>
+                <div onClick={() => this.gotolink('home')} className='logo'>
+                    <img  src={logo}/>
                 </div>
 
                 {/*  */}
@@ -55,4 +62,4 @@ const mapDispatchToProps = dispatch => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Header));

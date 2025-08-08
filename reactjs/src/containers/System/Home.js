@@ -41,7 +41,7 @@ class Home extends Component {
 
                     {/* content */}
                     <div className='aba-content-item'>
-                        <li className='item-li'><i class="fa-solid fa-folder"></i> NGƯỜI DÙNG</li>
+                        <li onClick={() => this.gotolink('nguoidung')} className='item-li'><i class="fa-solid fa-folder"></i> NGƯỜI DÙNG</li>
                         <li onClick={() => this.gotolink('thuchi-manage')} className='item-li'><i class="fa-solid fa-folder"></i> THU CHI</li>
                         <li className='item-li'><i class="fa-solid fa-folder"></i> KHO HÀNG</li>
                         <li className='item-li'><i class="fa-solid fa-folder"></i> CÔNG VIỆC</li>

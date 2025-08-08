@@ -102,10 +102,10 @@ class Thuchi extends Component {
                                                         </span>
                                                         {this.state.isfile[`${item.year}-${thang}`] && (
                                                             <ul className='list-file'>
-                                                                <li onClick={() => this.gotolink(`thuchi/tm/${this.state.thanghientai}.${item.year}`)} className='item-li-li'>
+                                                                <li onClick={() => this.gotolink(`thuchi/tm/${thang}/${item.year}`)} className='item-li-li'>
                                                                     <i className="fa-solid fa-file"></i> THU CHI TM THÁNG {thang}
                                                                 </li>
-                                                                <li className='item-li-li'>
+                                                                <li onClick={() => this.gotolink(`thuchi/as/${thang}/${item.year}`)} className='item-li-li'>
                                                                     <i className="fa-solid fa-file"></i> THU CHI AS THÁNG {thang}
                                                                 </li>
                                                                 <li className='item-li-li'>
@@ -131,7 +131,7 @@ class Thuchi extends Component {
                     <div className='aba-item'>
                         <div className='content-list-thuchi'>
                             <li onClick={() => this.gotolink(`thuchi/tm/${this.state.thanghientai}/${this.state.namhientai}`)}><i className="fa-solid fa-file"></i> THU CHI TM THÁNG {this.state.thanghientai}</li>
-                            <li><i className="fa-solid fa-file"></i> THU CHI AS THÁNG {this.state.thanghientai}</li>
+                            <li onClick={() => this.gotolink(`thuchi/as/${this.state.thanghientai}/${this.state.namhientai}`)} ><i className="fa-solid fa-file"></i> THU CHI AS THÁNG {this.state.thanghientai}</li>
                             <li><i className="fa-solid fa-file"></i> LƯƠNG PART TIME THÁNG {this.state.thanghientai}</li>
                             <li><i className="fa-solid fa-file"></i> LƯƠNG FULL TIME THÁNG {this.state.thanghientai}</li>
                         </div>

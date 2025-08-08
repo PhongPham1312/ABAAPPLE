@@ -1,6 +1,8 @@
 import express from "express";
 import userController from '../controllers/userController';
 import thuchu from '../controllers/thuchi'
+import khachhang from '../controllers/khachhang'
+
 
 let router = express.Router();
 
@@ -14,6 +16,12 @@ let initWebRoutes = (app) => {
     router.post('/api/create-thuchi', thuchu.createthuchi);
     router.get('/api/get-thuchi-nam-thang', thuchu.getnamthang);
     router.get('/api/get-thuchi', thuchu.handleGetThuChi);
+    router.delete('/api/delete-thuchi', thuchu.deleteThuchi);
+    router.put('/api/update-thuchi', thuchu.updateThuchi);
+
+
+    // Khách hàng
+    router.post('/api/create-khachhang', khachhang.createKhachHang);
 
 
     return app.use("/", router);
