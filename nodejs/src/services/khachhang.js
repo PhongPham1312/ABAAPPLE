@@ -1,5 +1,5 @@
 import db from "../models";
-
+import { Op, fn, col, where } from "sequelize"; // thêm 'where' vào đây
 // create or update customer
 const createKhachHang = (data) => {
   return new Promise(async (resolve, reject) => {
@@ -87,6 +87,74 @@ const getAll = () => {
   });
 };
 
+// search customers by keyword
+const searchUsers = (keyword) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!keyword || !keyword.trim()) {
+        return resolve({
+          errCode: 0,
+          errMessage: "OK",
+          data1: [],
+          data2: []
+        });
+      }
+
+      const keywords = keyword.trim().split(/\s+/);
+
+      const andConditions = keywords.map(word => {
+        // Nếu từ chỉ toàn số
+        if (/^\d+$/.test(word)) {
+          return {
+            [Op.or]: [
+              where(
+                fn("REPLACE", fn("REPLACE", fn("REPLACE", col("phone"), " ", ""), ".", ""), "-", ""),
+                { [Op.like]: `%${word}%` }
+              )
+            ]
+          };
+        }
+        // Nếu là chữ
+        return {
+          [Op.or]: [
+            { name: { [Op.like]: `%${word}%` } }
+          ]
+        };
+      });
+
+      // Lọc cho khách bán điện thoại
+      const data1 = await db.Khachhang.findAll({
+        where: {
+          type: "khách bán điện thoại",
+          [Op.and]: andConditions
+        },
+        attributes: { exclude: ["password"] },
+        order: [["createdAt", "DESC"]]
+      });
+
+      // Lọc cho khách điện thoại
+      const data2 = await db.Khachhang.findAll({
+        where: {
+          type: "khách điện thoại",
+          [Op.and]: andConditions
+        },
+        attributes: { exclude: ["password"] },
+        order: [["createdAt", "DESC"]]
+      });
+
+      resolve({
+        errCode: 0,
+        errMessage: "OK",
+        data1,
+        data2
+      });
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
-  createKhachHang,getAll  
+  createKhachHang,getAll , searchUsers
 };

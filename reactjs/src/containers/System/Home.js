@@ -31,10 +31,6 @@ class Home extends Component {
 
                     {/* navi dieu huong */}
                     <div className='navi'>
-
-                        {CommonUtils.isSubstring(this.props.match.path, 'home') === false && 
-                            <i class="fa-solid fa-arrow-left"></i>
-                        }
                         <i class="fa-solid fa-house"></i>
                         <span>trang chủ</span>
                     </div>

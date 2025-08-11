@@ -20,7 +20,6 @@
 
 .navi{
     display: flex;
-    justify-content: space-between;
     border: none;
     align-items: center;
 
@@ -31,6 +30,14 @@
         justify-content: right;
         align-items: center;
         height: 28px;
+        position: relative;
+        
+        .navi-search-close{
+            position: absolute;
+            i{
+                color: red;
+            }
+        }
 
         input{
             width: 90%;

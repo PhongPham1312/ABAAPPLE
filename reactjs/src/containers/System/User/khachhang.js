@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './user.scss';
-import { getAll } from '../../../services/khachhang'; // Assuming this is the service to get all customers
+import { getAll,  searchUsers } from '../../../services/khachhang'; // Assuming this is the service to get all customers
 import CommonUtils from '../../../utils/CommonUtils';
 import { isEmpty } from 'lodash'; // Importing isEmpty from lodash to check if the list is empty
 
@@ -14,6 +14,7 @@ class Khachhang extends Component {
             isShowSearch: false,
             listkb: [],
             listkm: [],
+            keyword: '',
         }
     }
     async componentDidMount () {
@@ -21,6 +22,19 @@ class Khachhang extends Component {
         await this.getAllCustomers();
     }
 
+    // search customers
+    searchCustomers = async () => {
+        let { keyword } = this.state;
+        if (keyword) {
+            let res = await searchUsers(keyword);
+            if (res && res.errCode === 0) {
+                this.setState({
+                    listkb: res.data1,
+                    listkm: res.data2,
+                });
+            } 
+        } 
+    }
     // get all customers
     getAllCustomers = async () => {
         let res = await getAll();
@@ -48,14 +62,37 @@ class Khachhang extends Component {
         }
     }
 
-    showSearch = () => {
+    showSearch = async () => {
         this.setState({
-            isShowSearch: !this.state.isShowSearch
+            isShowSearch: !this.state.isShowSearch,
+            keyword: '' // Reset keyword when showing search
         })
+        await this.getAllCustomers(); // Reset to all customers when showing search
     }
 
+    // handle search input change
+    handleInputChange = async(event) => {
+        let value = event.target.value;
+        this.setState({
+            keyword: value
+        });
 
+        // check null
+        if (value) {
+           await this.searchCustomers();
+        } else {
+           await this.getAllCustomers(); // Reset to all customers if input is empty
+        }
+    }
     
+    // handle remove keyword
+    handleRemoveKeyword = async () => {
+        this.setState({
+            keyword: ''
+        });
+        await this.getAllCustomers(); // Reset to all customers when removing keyword
+    }
+
     render() {
         let {listkb, listkm} = this.state;
         return (
@@ -68,12 +105,19 @@ class Khachhang extends Component {
                         </span>
                         <div className='navi-search'>
                             {this.state.isShowSearch &&
-                                <input type='text' placeholder='Tìm kiếm khách hàng...' />
+                                <input type='text' name='keyword'
+                                value={this.state.keyword}
+                                onChange={this.handleInputChange}
+                                placeholder='Tìm kiếm khách hàng...' />
                             }
                             {
                                 this.state.isShowSearch  === false ?
                                 <i onClick={this.showSearch} className="fa-solid fa-magnifying-glass"></i> : 
-                                <span onClick={this.showSearch}>hủy</span>
+                                <span className='navi-search-close'>
+                                    <i onClick={this.handleRemoveKeyword} class="fa-solid fa-xmark"></i>
+                                    <span onClick={this.showSearch}> hủy</span>
+                                </span>
+                                
                             }
                         </div>
                     </div>

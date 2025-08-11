@@ -8,4 +8,9 @@ const getAll = () => {
     return axios.get('api/get-all-khachhang');
 }
 
-export { createKhachHang , getAll,  };
+const searchUsers = (keyword) => {
+    return axios.get(`api/search-khachhang?keyword=${keyword}`);
+}
+
+
+export { createKhachHang , getAll, searchUsers };

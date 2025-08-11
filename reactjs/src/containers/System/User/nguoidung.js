@@ -28,13 +28,12 @@ class Nguoidung extends Component {
                 <div className='aba-content'>
                     <div className='navi'>
                         <i onClick={() => this.gotolink('home')} className="fa-solid fa-arrow-left"></i>
-                        <i class="fa-solid fa-user"></i>
                         <span>người dùng</span>
                     </div>
 
                     <div className='user-list'>
                         <li> <i class="fa-solid fa-folder"></i>NHÂN SỰ</li>
-                        <li><i class="fa-solid fa-folder"></i>SỈ DẮT MỐI</li>
+                        <li onClick={() => this.gotolink('datmoi')}><i class="fa-solid fa-folder"></i>SỈ DẮT MỐI</li>
                         <li onClick={() => this.gotolink('khachhang')}><i class="fa-solid fa-folder"></i>KHÁCH HÀNG</li>
                     </div>
                 </div>

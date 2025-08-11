@@ -27,6 +27,23 @@ let getAll = async (req, res) => {
   }
 };
 
+// search customers
+let searchUsers = async (req, res) => {
+  try {
+    let keyword = req.query.keyword || "";
+    let result = await khachhang.searchUsers(keyword); // service trả Promise
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server",
+    });
+  }
+};
+
+
 module.exports = {
-  createKhachHang, getAll
+  createKhachHang, getAll, searchUsers
 };

@@ -2,6 +2,7 @@ import express from "express";
 import userController from '../controllers/userController';
 import thuchu from '../controllers/thuchi'
 import khachhang from '../controllers/khachhang'
+import datmoi from '../controllers/datmoi'
 
 
 let router = express.Router();
@@ -23,6 +24,11 @@ let initWebRoutes = (app) => {
     // Khách hàng
     router.post('/api/create-khachhang', khachhang.createKhachHang);
     router.get('/api/get-all-khachhang', khachhang.getAll);
+    router.get('/api/search-khachhang', khachhang.searchUsers);
+
+    // dat moi
+    router.post('/api/create-datmoi', datmoi.createDatmoi);
+    router.get('/api/get-all-datmoi', datmoi.getAllDatmoi);
 
 
     return app.use("/", router);
