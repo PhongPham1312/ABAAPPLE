@@ -22,6 +22,7 @@ let initWebRoutes = (app) => {
 
     // Khách hàng
     router.post('/api/create-khachhang', khachhang.createKhachHang);
+    router.get('/api/get-all-khachhang', khachhang.getAll);
 
 
     return app.use("/", router);

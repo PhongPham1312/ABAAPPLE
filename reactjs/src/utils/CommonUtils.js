@@ -54,6 +54,19 @@ class CommonUtils {
 
         return `${day}.${month}.${year}`;
     };
+
+    static inHoaChuoi(str) {
+        if (!str) return "";
+        return str.toUpperCase();
+    }
+
+    static formatPhoneNumber(phone) {
+        if (!phone) return "";
+        // Xóa mọi ký tự không phải số
+        const digits = phone.replace(/\D/g, "");
+        // Chia nhóm mỗi 4 số và chấm
+        return digits.replace(/(\d{4})(?=\d)/g, "$1.");
+    }
 }
 
 export default CommonUtils;

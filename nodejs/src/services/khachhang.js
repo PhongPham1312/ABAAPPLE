@@ -1,5 +1,6 @@
 import db from "../models";
 
+// create or update customer
 const createKhachHang = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -61,6 +62,31 @@ const createKhachHang = (data) => {
   });
 };
 
+// get all 
+const getAll = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const data1 = await db.Khachhang.findAll({
+        where: { type: "khách bán điện thoại" },
+      });
+
+      const data2 = await db.Khachhang.findAll({
+        where: { type: "khách điện thoại" },
+      });
+
+      resolve({
+        errCode: 0,
+        errMessage: "OK",
+        data1,
+        data2,
+      });
+    } catch (error) {
+      console.error(error);
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
-  createKhachHang,
+  createKhachHang,getAll  
 };
