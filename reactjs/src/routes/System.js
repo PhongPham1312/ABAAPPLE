@@ -7,6 +7,7 @@ import ThuChiThang from '../containers/System/Thuchi/ThuChiThang';
 import nguoidung from '../containers/System/User/nguoidung';
 import khachhang from '../containers/System/User/khachhang';
 import datmoi from '../containers/System/User/datmoi';
+import nhansu from '../containers/System/User/nhansu';
 
 class System extends Component {
     render() {
@@ -27,6 +28,9 @@ class System extends Component {
 
                         {/* dat moi */}
                         <Route path="/system/datmoi" component={datmoi} />
+
+                        {/* nhan su */}
+                        <Route path="/system/nhansu" component={nhansu} />
 
                         {/* Redirect to home if no match */}
 

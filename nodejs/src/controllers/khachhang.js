@@ -43,7 +43,22 @@ let searchUsers = async (req, res) => {
   }
 };
 
+// delete customer
+let deleteKhachHang = async (req, res) => {
+  try {
+    let id = req.body.id; // hoặc req.params.id nếu dùng URL param
+    let result = await khachhang.deleteKhachHang(id);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server"
+    });
+  }
+};
+
 
 module.exports = {
-  createKhachHang, getAll, searchUsers
+  createKhachHang, getAll, searchUsers, deleteKhachHang
 };

@@ -69,7 +69,7 @@ let create = (data) => {
                 name: data.name,
                 phone: data.phone,
                 position: data.position || 'null',
-                role: data.role || 'null',
+                money: data.money || 'null',
             })
             resolve('Create a new user succeed!')
         } catch (e) {
@@ -90,7 +90,7 @@ let Login = (email, password) => {
             if (isExist || isExistPhone) {
                 //user already exist
                 let user = await db.User.findOne({
-                    attributes: ['email', 'password', 'name', 'phone', 'position', 'role'],
+                    attributes: ['email', 'password', 'name', 'phone', 'position'],
                     where: {
                     [Op.or]: [
                         { email: email },

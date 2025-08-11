@@ -12,5 +12,11 @@ const searchUsers = (keyword) => {
     return axios.get(`api/search-khachhang?keyword=${keyword}`);
 }
 
+// delete customer
+const deleteKhachHang = (id) => {
+    return axios.delete('api/delete-khachhang', { data: { id } });
+}
+    
 
-export { createKhachHang , getAll, searchUsers };
+
+export { createKhachHang , getAll, searchUsers, deleteKhachHang };

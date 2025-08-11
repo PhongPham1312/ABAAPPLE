@@ -29,6 +29,20 @@ let getAllDatmoi = async (req, res) => {
   }
 };
 
+let deleteDatmoi = async (req, res) => {
+  try {
+    let id = req.body.id; // nếu gửi param thì dùng req.params.id
+    let result = await datmoi.deleteDatmoi(id);
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      errCode: -1,
+      errMessage: "Error from server"
+    });
+  }
+};
+
 module.exports = {
-  createDatmoi, getAllDatmoi
+  createDatmoi, getAllDatmoi , deleteDatmoi
 };

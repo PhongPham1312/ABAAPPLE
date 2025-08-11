@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './user.scss';
-import { getAll,  searchUsers } from '../../../services/khachhang'; // Assuming this is the service to get all customers
+import { getAll,  searchUsers, deleteKhachHang } from '../../../services/khachhang'; // Assuming this is the service to get all customers
 import CommonUtils from '../../../utils/CommonUtils';
 import { isEmpty } from 'lodash'; // Importing isEmpty from lodash to check if the list is empty
 
@@ -20,6 +20,19 @@ class Khachhang extends Component {
     async componentDidMount () {
         // Fetch all customers when the component mounts
         await this.getAllCustomers();
+    }
+
+    // handle delete customer
+    handleDeleteCustomer = async (id) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+            let res = await deleteKhachHang(id);
+            if (res && res.errCode === 0) {
+                await this.getAllCustomers(); // Refresh the list after deletion
+                alert("Xóa khách hàng thành công");
+            } else {
+                alert("Xóa khách hàng thất bại");
+            }
+        }
     }
 
     // search customers
@@ -133,7 +146,8 @@ class Khachhang extends Component {
                             {listkm && !isEmpty(listkm) && listkm.map((item, index) => {
                                 return (
                                     <li className='khachhang-item' key={index} onClick={() => this.gotolink(`khachhang/${item.id}`)}>
-                                            {CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}
+                                            <span>{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
+                                            <i onClick={() => this.handleDeleteCustomer(item.id)} className="fa-solid fa-trash"></i>
                                     </li>
                                 )
 
@@ -149,7 +163,9 @@ class Khachhang extends Component {
                             {listkb && !isEmpty(listkb) && listkb.map((item, index) => {
                                 return (
                                     <li className='khachhang-item' key={index} onClick={() => this.gotolink(`khachhang/${item.id}`)}>
-                                            {CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}
+                                            <span>{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
+                                            <i onClick={() => this.handleDeleteCustomer(item.id)} className="fa-solid fa-trash"></i>
+                                                
                                     </li>
                                 )
 

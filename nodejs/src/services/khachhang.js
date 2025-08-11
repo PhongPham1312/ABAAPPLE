@@ -155,6 +155,43 @@ const searchUsers = (keyword) => {
   });
 };
 
+const deleteKhachHang = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        return resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter: id"
+        });
+      }
+
+      const khach = await db.Khachhang.findOne({
+        where: { id: id }
+      });
+
+      if (!khach) {
+        return resolve({
+          errCode: 2,
+          errMessage: "Customer not found"
+        });
+      }
+
+      await db.Khachhang.destroy({
+        where: { id: id }
+      });
+
+      resolve({
+        errCode: 0,
+        errMessage: "Delete successfully"
+      });
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+
 module.exports = {
-  createKhachHang,getAll , searchUsers
+  createKhachHang,getAll , searchUsers, deleteKhachHang
 };

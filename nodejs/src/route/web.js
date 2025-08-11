@@ -25,10 +25,12 @@ let initWebRoutes = (app) => {
     router.post('/api/create-khachhang', khachhang.createKhachHang);
     router.get('/api/get-all-khachhang', khachhang.getAll);
     router.get('/api/search-khachhang', khachhang.searchUsers);
+    router.delete('/api/delete-khachhang', khachhang.deleteKhachHang);
 
     // dat moi
     router.post('/api/create-datmoi', datmoi.createDatmoi);
     router.get('/api/get-all-datmoi', datmoi.getAllDatmoi);
+    router.delete('/api/delete-datmoi', datmoi.deleteDatmoi);
 
 
     return app.use("/", router);

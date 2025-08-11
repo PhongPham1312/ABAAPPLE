@@ -88,6 +88,43 @@ const getAllDatmoi = (keyword) => {
   });
 };
 
+// delete dat moi
+const deleteDatmoi = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!id) {
+        return resolve({
+          errCode: 1,
+          errMessage: "Missing required parameter: id"
+        });
+      }
+
+      const datmoi = await db.Datmoi.findOne({
+        where: { id: id }
+      });
+
+      if (!datmoi) {
+        return resolve({
+          errCode: 2,
+          errMessage: "Datmoi not found"
+        });
+      }
+
+      await db.Datmoi.destroy({
+        where: { id: id }
+      });
+
+      resolve({
+        errCode: 0,
+        errMessage: "Delete successfully"
+      });
+
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
-  createDatmoi, getAllDatmoi
+  createDatmoi, getAllDatmoi, deleteDatmoi
 };

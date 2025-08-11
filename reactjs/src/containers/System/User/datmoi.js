@@ -2,13 +2,19 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './user.scss';
-import { getAllDatmoi } from '../../../services/datmoi'; // Assuming this is the service to manage "dắt mối"
+import CommonUtils from '../../../utils/CommonUtils';
+import { getAllDatmoi, deleteDatmoi } from '../../../services/datmoi'; // Adjust the import path as necessary
+import { isEmpty } from 'lodash';
+
+
 class DatMoi extends Component {
 
     constructor(props) {
         super(props);   
         this.state = {
             isShowSearch: false,
+            keyword: '',
+            datmoi: [] // Initialize with an empty array
         }
     }
     async componentDidMount () {
@@ -19,7 +25,15 @@ class DatMoi extends Component {
     // get all "dắt mối"
     getalldatmoi = async (keyword) => {
         let res = await getAllDatmoi(keyword);
-        console.log('res', res);
+        if (res && res.errCode === 0) {
+            this.setState({
+                datmoi: res.data 
+            });
+        } else {
+            this.setState({
+                datmoi: [] // Reset to empty array on error
+            });
+        }
     }
 
     // handle remove keyword
@@ -27,6 +41,7 @@ class DatMoi extends Component {
         this.setState({
             keyword: ''
         });
+        await this.getalldatmoi(''); // Fetch all "dắt mối" without keyword
     }
 
     showSearch = async () => {
@@ -34,6 +49,7 @@ class DatMoi extends Component {
             isShowSearch: !this.state.isShowSearch,
             keyword: '' // Reset keyword when showing search
         })
+        await this.getalldatmoi(''); // Fetch all "dắt mối" without keyword
     }
 
     // link to ...
@@ -45,7 +61,31 @@ class DatMoi extends Component {
         }
     }
 
+    //delete "dắt mối"
+    handleDeleteCustomer = async (id) => {
+        if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
+            let res = await deleteDatmoi(id);
+            if (res && res.errCode === 0) {
+                await this.getalldatmoi(); // Refresh the list after deletion
+                alert("Xóa sỉ dắt mối thành công");
+            } else {
+                alert("Xóa sỉ dắt mối thất bại");
+            }
+        }
+    }
+
+    handleInputChange = async(event) => {
+        let value = event.target.value;
+        this.setState({
+            keyword: value
+        });
+
+        await this.getalldatmoi(value);
+    }
+    
+
     render() {
+        const { isShowSearch, keyword , datmoi} = this.state;
         return (
            <div className='aba-container'>
                 <div className='aba-content'>
@@ -59,7 +99,7 @@ class DatMoi extends Component {
                                 <input type='text' name='keyword'
                                 value={this.state.keyword}
                                 onChange={this.handleInputChange}
-                                placeholder='Tìm kiếm khách hàng...' />
+                                placeholder='Tìm kiếm ...' />
                             }
                             {
                                 this.state.isShowSearch  === false ?
@@ -75,7 +115,16 @@ class DatMoi extends Component {
 
                     {/* list */}
                     <div className='list-khachhang'>
-
+                            {datmoi && !isEmpty(datmoi) && 
+                                datmoi.map((item, index) => {
+                                    return (
+                                        <li className='khachhang-item' key={index}>
+                                            <span>{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
+                                            <i onClick={() => this.handleDeleteCustomer(item.id)} className="fa-solid fa-trash"></i>
+                                        </li>
+                                    )
+                                })
+                            }
                     </div>
 
                 </div>
