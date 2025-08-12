@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
   Position.init({
     chucvu: DataTypes.STRING,
     money: DataTypes.STRING,
-    type: DataTypes.STRING,
   }, {
     sequelize,
     modelName: 'Position',

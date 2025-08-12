@@ -3,6 +3,7 @@ import userController from '../controllers/userController';
 import thuchu from '../controllers/thuchi'
 import khachhang from '../controllers/khachhang'
 import datmoi from '../controllers/datmoi'
+import position from '../controllers/position'
 
 
 let router = express.Router();
@@ -31,6 +32,10 @@ let initWebRoutes = (app) => {
     router.post('/api/create-datmoi', datmoi.createDatmoi);
     router.get('/api/get-all-datmoi', datmoi.getAllDatmoi);
     router.delete('/api/delete-datmoi', datmoi.deleteDatmoi);
+
+    // position
+    router.post('/api/create-position', position.createPosition);
+    router.get('/api/get-all-positions', position.getAllPositions);
 
 
     return app.use("/", router);

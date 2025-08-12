@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import { Modal } from 'reactstrap';
 
@@ -61,7 +60,6 @@ class ConfirmModal extends Component {
             <Modal isOpen={contentOfConfirmModal.isOpen} className='confirm-modal' centered={true}>
                 <div className="modal-header">
                     <div className="modal-title">
-                        <FormattedMessage id={"common.confirm"} />
                     </div>
                     <div className="col-auto">
                         <button className="btn btn-close" onClick={this.onClose}>
@@ -74,7 +72,6 @@ class ConfirmModal extends Component {
                     <div className="confirm-modal-content">
                         <div className="row">
                             <div className="col-12">
-                                <FormattedMessage id={contentOfConfirmModal.messageId ? contentOfConfirmModal.messageId : "common.confirm-this-task"} />
                             </div>
 
                             <hr />
@@ -82,10 +79,8 @@ class ConfirmModal extends Component {
                             <div className="col-12">
                                 <div className="btn-container text-center">
                                     <button className="btn btn-add" onClick={this.onClose} >
-                                        <FormattedMessage id="common.close" />
                                     </button>
                                     <button ref={this.acceptBtnRef} className="btn btn-add" onClick={this.onAcceptBtnClick}>
-                                        <FormattedMessage id={"common.accept"} />
                                     </button>
                                 </div>
                             </div>

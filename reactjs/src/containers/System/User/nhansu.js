@@ -5,6 +5,7 @@ import './user.scss';
 import CommonUtils from '../../../utils/CommonUtils';
 import { getAllDatmoi, deleteDatmoi } from '../../../services/datmoi'; // Adjust the import path as necessary
 import { isEmpty } from 'lodash';
+import ModalNhansu from './Modal/ModalNhansu';
 
 
 class Nhansu extends Component {
@@ -14,7 +15,9 @@ class Nhansu extends Component {
         this.state = {
             isShowSearch: false,
             keyword: '',
-            datmoi: [] // Initialize with an empty array
+            datmoi: [], // Initialize with an empty array
+            isShowmodaladd: false,
+            typeModal: ''
         }
     }
     async componentDidMount () {
@@ -83,9 +86,22 @@ class Nhansu extends Component {
         await this.getalldatmoi(value);
     }
     
+    openModalAdd = (type) => {
+        this.setState({
+            isShowmodaladd: true,
+            typeModal: type
+        });
+    }
+
+    closeModalAdd = () => {
+        this.setState({
+            isShowmodaladd: false,
+            typeModal: ''
+        });
+    }
 
     render() {
-        const { isShowSearch, keyword , datmoi} = this.state;
+        const { datmoi, isShowmodaladd} = this.state;
         return (
            <div className='aba-container'>
                 <div className='aba-content'>
@@ -105,7 +121,7 @@ class Nhansu extends Component {
                                 this.state.isShowSearch  === false ?
                                 <i onClick={this.showSearch} className="fa-solid fa-magnifying-glass"></i> : 
                                 <span className='navi-search-close'>
-                                    <i onClick={this.handleRemoveKeyword} class="fa-solid fa-xmark"></i>
+                                    <i onClick={this.handleRemoveKeyword} className="fa-solid fa-xmark"></i>
                                     <span onClick={this.showSearch}> hủy</span>
                                 </span>
                                 
@@ -127,11 +143,19 @@ class Nhansu extends Component {
                             }
                     </div>
 
+                    {isShowmodaladd === true && 
+                        <ModalNhansu 
+                            closeModalAdd={this.closeModalAdd}
+                            typeModal={this.state.typeModal}
+                        />
+                    }
+
                 </div>
 
-                <div className='aba-add'>
-                        <i class="fa fa-plus"></i>
+                <div onClick={() => this.openModalAdd('add')} className='aba-add'>
+                        <i className="fa fa-plus"></i>
                 </div>
+                
            </div>
         );
     }

@@ -3,7 +3,7 @@ import db from "../models";
 const createPosition = (data) => {
   return new Promise(async (resolve, reject) => {
     try {
-      if (!data.chucvu || !data.type || !data.money) {
+      if (!data.chucvu || !data.money) {
         return resolve({
           errCode: 1,
           errMessage: "Missing required parameter"
@@ -12,8 +12,7 @@ const createPosition = (data) => {
 
       await db.Position.create({
         chucvu: data.chucvu,
-        money: data.money || 'null',
-        type: data.type
+        money: data.money ,
       });
 
       resolve({

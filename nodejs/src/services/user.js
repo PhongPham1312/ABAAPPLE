@@ -70,6 +70,7 @@ let create = (data) => {
                 phone: data.phone,
                 position: data.position || 'null',
                 money: data.money || 'null',
+                type: 0 // mặc định là 'user' nếu không có loại người dùng
             })
             resolve('Create a new user succeed!')
         } catch (e) {
@@ -81,64 +82,58 @@ let create = (data) => {
 let Login = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
-            let userData = {}; // khởi tạo đối tượng userData để lưu trữ thông tin người dùng
-            // kiểm tra email đã tồn tại chưa
+            let userData = {};
+
             let isExist = await checkUserEmail(email);
-            // kiểm tra phone đã tồn tại chưa
             let isExistPhone = await checkUserPhone(email);
 
             if (isExist || isExistPhone) {
-                //user already exist
                 let user = await db.User.findOne({
-                    attributes: ['email', 'password', 'name', 'phone', 'position'],
+                    attributes: ['email', 'password', 'name', 'phone', 'position', 'type'],
                     where: {
-                    [Op.or]: [
-                        { email: email },
-                        { phone: email }
-                    ]
+                        [Op.or]: [
+                            { email: email },
+                            { phone: email }
+                        ]
                     },
                     raw: true
-
                 });
 
-                // nếu không tìm thấy người dùng, trả về lỗi
                 if (!user) {
                     userData.errCode = 1;
                     userData.errMessage = "Email hoặc số điện thoại không tồn tại";
                     return resolve(userData);
                 }
 
-                // nếu tìm thấy người dùng, kiểm tra mật khẩu
-                if (user) {
-                    let check = await bcrypt.compare(password, user.password);
+                // 🚫 Chặn nếu type = 1
+                if (user.type === 1) {
+                    userData.errCode = 4;
+                    userData.errMessage = "Tài khoản của bạn đã bị khóa";
+                    return resolve(userData);
+                }
 
-                    if (check) {
-                        userData.errCode = 0;
-                        userData.errMessage = 'OK';
+                let check = await bcrypt.compare(password, user.password);
 
-                        delete user.password;
-                        userData.user = user;
-                    }
-                    else {
-                        userData.errCode = 3;
-                        userData.errMessage = 'Wrong password';
-                    }
+                if (check) {
+                    userData.errCode = 0;
+                    userData.errMessage = 'OK';
+                    delete user.password;
+                    userData.user = user;
                 } else {
-                    userData.errCode = 2;
-                    userData.errMessage = `User not found`;
+                    userData.errCode = 3;
+                    userData.errMessage = 'Wrong password';
                 }
 
             } else {
-                //return error
                 userData.errCode = 1;
                 userData.errMessage = `Your's Email isn't exist in our system, plz try other email`
             }
-            resolve(userData)
+            resolve(userData);
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
 
 let checkUserEmail = (userEmail) => {
     return new Promise(async (resolve, reject) => {
@@ -157,6 +152,8 @@ let checkUserEmail = (userEmail) => {
         }
     })
 }
+
+
 
 
 

@@ -127,7 +127,7 @@ class Khachhang extends Component {
                                 this.state.isShowSearch  === false ?
                                 <i onClick={this.showSearch} className="fa-solid fa-magnifying-glass"></i> : 
                                 <span className='navi-search-close'>
-                                    <i onClick={this.handleRemoveKeyword} class="fa-solid fa-xmark"></i>
+                                    <i onClick={this.handleRemoveKeyword} className="fa-solid fa-xmark"></i>
                                     <span onClick={this.showSearch}> hủy</span>
                                 </span>
                                 

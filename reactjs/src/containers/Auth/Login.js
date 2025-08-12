@@ -5,8 +5,6 @@ import { push } from "connected-react-router";
 import * as actions from "../../store/actions";
 
 import './Login.scss';
-import { FormattedMessage } from 'react-intl';
-// import { userService } from '../../services/userService';
 import { handleLoginApi } from '../../services/userService';
 
 
@@ -44,14 +42,21 @@ class Login extends Component {
 
             let data = await handleLoginApi(this.state.username, this.state.password);
             if (data && data.errCode !== 0) {
-                this.setState({
-                    errMessage: data.message
-                })
+                if (data.errCode === 4) {
+                        this.setState({
+                            errMessage: "Tài khoản này không được phép đăng nhập"
+                        });
+                    } else {
+                        this.setState({
+                            errMessage: data.errMessage 
+                        });
+                    }
             }
             if (data && data.errCode === 0) {
                 this.props.userLoginSuccess(data.user);
                 console.log('loging success');
             }
+
 
         } catch (e) {
             if (e.response) {

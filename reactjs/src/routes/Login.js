@@ -8,7 +8,6 @@ import { KeyCodeUtils, LanguageUtils } from "../utils";
 import userIcon from '../../src/assets/images/user.svg';
 import passIcon from '../../src/assets/images/pass.svg';
 import './Login.scss';
-import { FormattedMessage } from 'react-intl';
 
 import adminService from '../services/adminService';
 
@@ -105,7 +104,6 @@ class Login extends Component {
                 <div className="login-container">
                     <div className="form_login">
                         <h2 className="title">
-                            <FormattedMessage id="login.login" />
                         </h2>
                         <div className="form-group icon-true">
                             <img className="icon" src={userIcon} alt="this" />

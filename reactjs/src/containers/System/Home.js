@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { FormattedMessage } from 'react-intl';
 import { connect } from 'react-redux';
 import './SystemScss.scss';
 import CommonUtils from '../../utils/CommonUtils';
@@ -31,16 +30,16 @@ class Home extends Component {
 
                     {/* navi dieu huong */}
                     <div className='navi'>
-                        <i class="fa-solid fa-house"></i>
+                        <i className="fa-solid fa-house"></i>
                         <span>trang chủ</span>
                     </div>
 
                     {/* content */}
                     <div className='aba-content-item'>
-                        <li onClick={() => this.gotolink('nguoidung')} className='item-li'><i class="fa-solid fa-folder"></i> NGƯỜI DÙNG</li>
-                        <li onClick={() => this.gotolink('thuchi-manage')} className='item-li'><i class="fa-solid fa-folder"></i> THU CHI</li>
-                        <li className='item-li'><i class="fa-solid fa-folder"></i> KHO HÀNG</li>
-                        <li className='item-li'><i class="fa-solid fa-folder"></i> CÔNG VIỆC</li>
+                        <li onClick={() => this.gotolink('nguoidung')} className='item-li'><i className="fa-solid fa-folder"></i> NGƯỜI DÙNG</li>
+                        <li onClick={() => this.gotolink('thuchi-manage')} className='item-li'><i className="fa-solid fa-folder"></i> THU CHI</li>
+                        <li className='item-li'><i className="fa-solid fa-folder"></i> KHO HÀNG</li>
+                        <li className='item-li'><i className="fa-solid fa-folder"></i> CÔNG VIỆC</li>
                     </div>
 
                     
@@ -49,7 +48,7 @@ class Home extends Component {
                 {/* button add */}
                 {CommonUtils.isSubstring(this.props.match.path, 'home') === false && 
                     <div className='aba-add'>
-                        <i class="fa fa-plus"></i>
+                        <i className="fa fa-plus"></i>
                     </div>
                 }
                     
