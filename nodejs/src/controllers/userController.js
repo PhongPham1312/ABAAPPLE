@@ -28,9 +28,27 @@ let createuser = async (req, res) => {
     })
 }
 
+// get all
+let getAll = async (req, res) => {
+    let keyword = req.query.keyword || "";
+    let message = await userService.getall(keyword);
+    return res.status(200).json({
+        errCode: 0,
+        data: message
+    })
+}
+
+let getUserById = async (req, res) => {
+    let message = await userService.getUserById(req.query.id);
+    return res.status(200).json({
+        errCode: 0,
+        data: message
+    })
+}
 
 
 module.exports = {
     Login: Login,
     createuser: createuser,
+    getAll, getUserById
 }

@@ -4,6 +4,21 @@ class CommonUtils {
         return false;
     }
 
+    static nhan2so(a, b) {
+    // Chuyển về string, loại bỏ khoảng trắng & ký tự không phải số hoặc dấu chấm
+        const cleanA = String(a).replace(/[^\d.-]/g, '');
+        const cleanB = String(b).replace(/[^\d.-]/g, '');
+
+        const numA = Number(cleanA);
+        const numB = Number(cleanB);
+
+        if (isNaN(numA) || isNaN(numB)) {
+            throw new Error(`Giá trị không hợp lệ: a=${a}, b=${b}`);
+        }
+
+        return numA * numB;
+    }
+
     static isSubstring = (mainString, subString) => {
         if (!mainString || !subString) return false;
         return mainString.toLowerCase().includes(subString.toLowerCase());
@@ -67,6 +82,32 @@ class CommonUtils {
         // Chia nhóm mỗi 4 số và chấm
         return digits.replace(/(\d{4})(?=\d)/g, "$1.");
     }
-}
+
+    static formatPhone(phone) {
+        if (!phone) return '';
+        return phone.toString().replace(/\D/g, ''); // Xóa tất cả ký tự không phải số
+    }
+
+    static vietTatChucVu = (chucvu) => {
+        if (!chucvu) return '';
+
+        let cv = chucvu.trim().toLowerCase();
+
+        if (cv === 'kỹ thuật' ) return 'kt';
+        if (cv === 'part time' ) return 'pt';
+        if (cv === 'full time' ) return 'ft';
+        if (cv === 'quản lý' ) return 'ql';
+
+        return chucvu; // giữ nguyên nếu không có trong danh sách viết tắt
+    };
+
+    static boDau(str = "") {
+        return str
+            .normalize("NFD")                    // tách ký tự + dấu
+            .replace(/[\u0300-\u036f]/g, "")     // xóa toàn bộ dấu
+            .replace(/đ/g, "d")                  // đ -> d
+            .replace(/Đ/g, "D");                 // Đ -> D
+        }
+    }
 
 export default CommonUtils;

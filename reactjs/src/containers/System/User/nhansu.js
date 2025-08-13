@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import './user.scss';
 import CommonUtils from '../../../utils/CommonUtils';
-import { getAllDatmoi, deleteDatmoi } from '../../../services/datmoi'; // Adjust the import path as necessary
+import { getAllUsers } from '../../../services/userService'; // Adjust the import path as necessary
 import { isEmpty } from 'lodash';
 import ModalNhansu from './Modal/ModalNhansu';
 
@@ -15,26 +15,26 @@ class Nhansu extends Component {
         this.state = {
             isShowSearch: false,
             keyword: '',
-            datmoi: [], // Initialize with an empty array
+            listUser: [], // Initialize with an empty array
             isShowmodaladd: false,
             typeModal: ''
         }
     }
     async componentDidMount () {
         // Fetch all "dắt mối" when the component mounts
-        await this.getalldatmoi('');
+        await this.getAllUser('');
     }
 
     // get all "dắt mối"
-    getalldatmoi = async (keyword) => {
-        let res = await getAllDatmoi(keyword);
+    getAllUser = async (keyword) => {
+        let res = await getAllUsers(keyword);
         if (res && res.errCode === 0) {
             this.setState({
-                datmoi: res.data 
+                listUser: res.data.data 
             });
         } else {
             this.setState({
-                datmoi: [] // Reset to empty array on error
+                listUser: [] // Reset to empty array on error
             });
         }
     }
@@ -44,7 +44,7 @@ class Nhansu extends Component {
         this.setState({
             keyword: ''
         });
-        await this.getalldatmoi(''); // Fetch all "dắt mối" without keyword
+        await this.getAllUser(''); // Fetch all "dắt mối" without keyword
     }
 
     showSearch = async () => {
@@ -52,7 +52,7 @@ class Nhansu extends Component {
             isShowSearch: !this.state.isShowSearch,
             keyword: '' // Reset keyword when showing search
         })
-        await this.getalldatmoi(''); // Fetch all "dắt mối" without keyword
+        await this.getAllUser(''); // Fetch all "dắt mối" without keyword
     }
 
     // link to ...
@@ -65,7 +65,7 @@ class Nhansu extends Component {
     }
 
     //delete "dắt mối"
-    handleDeleteCustomer = async (id) => {
+    /* handleDeleteCustomer = async (id) => {
         if (window.confirm("Bạn có chắc chắn muốn xóa khách hàng này?")) {
             let res = await deleteDatmoi(id);
             if (res && res.errCode === 0) {
@@ -75,7 +75,7 @@ class Nhansu extends Component {
                 alert("Xóa sỉ dắt mối thất bại");
             }
         }
-    }
+    } */
 
     handleInputChange = async(event) => {
         let value = event.target.value;
@@ -83,13 +83,14 @@ class Nhansu extends Component {
             keyword: value
         });
 
-        await this.getalldatmoi(value);
+        await this.getAllUser(value);
     }
     
-    openModalAdd = (type) => {
+    openModalAdd = (type, id) => {
         this.setState({
             isShowmodaladd: true,
-            typeModal: type
+            typeModal: type,
+            userid: id
         });
     }
 
@@ -101,7 +102,7 @@ class Nhansu extends Component {
     }
 
     render() {
-        const { datmoi, isShowmodaladd} = this.state;
+        const { listUser, isShowmodaladd} = this.state;
         return (
            <div className='aba-container'>
                 <div className='aba-content'>
@@ -131,12 +132,11 @@ class Nhansu extends Component {
 
                     {/* list */}
                     <div className='list-khachhang'>
-                            {datmoi && !isEmpty(datmoi) && 
-                                datmoi.map((item, index) => {
+                            {listUser && !isEmpty(listUser) && 
+                                listUser.map((item, index) => {
                                     return (
-                                        <li className='khachhang-item' key={index}>
-                                            <span>{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
-                                            <i onClick={() => this.handleDeleteCustomer(item.id)} className="fa-solid fa-trash"></i>
+                                        <li className='khachhang-item' key={index} onClick={() => this.openModalAdd('edit', item.id)}>
+                                            <span>{CommonUtils.vietTatChucVu(item.positionData.chucvu)}{' _ '}{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
                                         </li>
                                     )
                                 })
@@ -146,13 +146,15 @@ class Nhansu extends Component {
                     {isShowmodaladd === true && 
                         <ModalNhansu 
                             closeModalAdd={this.closeModalAdd}
+                            getAllUser = {this.getAllUser}
                             typeModal={this.state.typeModal}
+                            userid = {this.state.userid}
                         />
                     }
 
                 </div>
 
-                <div onClick={() => this.openModalAdd('add')} className='aba-add'>
+                <div onClick={() => this.openModalAdd('add', '')} className='aba-add'>
                         <i className="fa fa-plus"></i>
                 </div>
                 

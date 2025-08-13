@@ -10,8 +10,12 @@ const createUser = (data) => {
 }
 
 // get all users
-const getAllUsers = () => {
-    return axios.get('api/get-all-user');
+const getAllUsers = (keyword) => {
+    return axios.get(`api/get-all-user?keyword=${keyword}`);
 }
 
-export { handleLoginApi , createUser, getAllUsers };
+const getUserById = (id) => {
+    return axios.get(`api/get-user?id=${id}`);
+}
+
+export { handleLoginApi , createUser, getAllUsers, getUserById };

@@ -13,6 +13,8 @@ let initWebRoutes = (app) => {
     // API for user
     router.post('/api/login', userController.Login);
     router.post('/api/create-user', userController.createuser);
+    router.get('/api/get-all-user', userController.getAll);
+    router.get('/api/get-user', userController.getUserById);
 
     // thu chi
     router.post('/api/create-thuchi', thuchu.createthuchi);

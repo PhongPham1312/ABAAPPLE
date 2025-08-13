@@ -51,6 +51,18 @@ class Login extends Component {
                             errMessage: data.errMessage 
                         });
                     }
+                
+                    if (data.errCode === 3) {
+                        this.setState({
+                            errMessage: "mật khẩu không đúng"
+                        });
+                    } 
+
+                    else if (data.errCode === 1) {
+                        this.setState({
+                            errMessage: "Email hoặc số điện thoại không tồn tại"
+                        });
+                    } 
             }
             if (data && data.errCode === 0) {
                 this.props.userLoginSuccess(data.user);

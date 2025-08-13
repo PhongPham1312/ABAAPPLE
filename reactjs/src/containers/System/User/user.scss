@@ -107,6 +107,22 @@
             margin-bottom: 10px;
         }
 
+        .navi-nhansu{
+            width: 100%;
+            display: flex;
+
+            div{
+                flex: 1;
+                text-align: center;
+                cursor: pointer;
+                font-weight: bold;
+                &.nhansu-item{
+                    border-bottom: 1px solid yellow;
+                }
+                margin-bottom: 10px;
+            }
+        }
+
         .ModalNhansu-btn{
             width: 100%;
             display: flex;

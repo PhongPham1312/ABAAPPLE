@@ -27,6 +27,12 @@ module.exports = {
       money: {
         type: Sequelize.STRING,
       },
+      imgfront: {
+        type: Sequelize.STRING,
+      },
+      imgback: {
+        type: Sequelize.STRING,
+      },
       type: {
         type: Sequelize.STRING,
       },

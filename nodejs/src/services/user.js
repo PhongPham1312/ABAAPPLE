@@ -40,44 +40,78 @@ let checkUserPhone = (userPhone) => {
 let create = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // kiểm tra email đã tồn tại chưa
-            let isExist = await checkUserEmail(data.email);
-            // kiểm tra phone đã tồn tại chưa
-            let isExistPhone = await checkUserPhone(data.phone);
-            // tạo người dùng mới trong cơ sở dữ liệu
-            if (isExist || isExistPhone) { // nếu email hoặc phone đã tồn tại
-                // trả về lỗi nếu email hoặc phone đã tồn tại
-                resolve({
-                    errCode: 1,
-                    errMessage: `Your email is already in use, please try another email or phone`
-                })
-                return;
-            }
-            // nếu email và phone chưa tồn tại, tạo người dùng mới
-            // kiểm tra có đủ email, password, name, phone không
-            if (!data.email || !data.password || !data.name || !data.phone ) {
-                resolve({
+            // kiểm tra email và phone
+            let existingUser = await db.User.findOne({
+                where: {
+                    [db.Sequelize.Op.or]: [
+                        { email: data.email },
+                        { phone: data.phone }
+                    ]
+                }
+            });
+
+            if (!data.name || !data.phone || !data.type) {
+                return resolve({
                     errCode: 2,
                     errMessage: 'Missing required parameters!'
-                })
-                return;
+                });
             }
-            let hashPasswordFromBcrypt = await hashUserPassword(data.password); // mã hóa mật khẩu người dùng
-            await db.User.create({
-                email: data.email,
-                password: hashPasswordFromBcrypt,
-                name: data.name,
-                phone: data.phone,
-                position: data.position || 'null',
-                money: data.money || 'null',
-                type: 0 // mặc định là 'user' nếu không có loại người dùng
-            })
-            resolve('Create a new user succeed!')
+
+            if (existingUser) {
+                // Cập nhật
+                existingUser.name = data.name;
+                existingUser.phone = data.phone;
+                existingUser.position = data.position || existingUser.position;
+                existingUser.imageBack = data.imageBack || existingUser.imageBack;
+                existingUser.imageFont = data.imageFont || existingUser.imageFont;
+                existingUser.money = data.money || existingUser.money;
+                existingUser.type = data.type || existingUser.type;
+
+                if (data.password) {
+                    existingUser.password = await hashUserPassword(data.password);
+                }
+
+                await existingUser.save();
+
+                return resolve({
+                    errCode: 0,
+                    message: 'Cập nhật thông tin thành công'
+                });
+            } else {
+                // Tạo mới
+                if (!data.password) {
+                    return resolve({
+                        errCode: 2,
+                        errMessage: 'Missing password for new user!'
+                    });
+                }
+
+                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+
+                await db.User.create({
+                    email: data.email || null,
+                    password: hashPasswordFromBcrypt,
+                    name: data.name,
+                    phone: data.phone,
+                    position: data.position || null,
+                    imageBack: data.imageBack || null,
+                    imageFont: data.imageFont || null,
+                    money: data.money || null,
+                    type: data.type
+                });
+
+                return resolve({
+                    errCode: 0,
+                    message: 'Thêm nhân sự mới thành công'
+                });
+            }
+
         } catch (e) {
             reject(e);
         }
-    })
-}
+    });
+};
+
 
 let Login = (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -89,13 +123,20 @@ let Login = (email, password) => {
 
             if (isExist || isExistPhone) {
                 let user = await db.User.findOne({
-                    attributes: ['email', 'password', 'name', 'phone', 'position', 'type'],
+                    attributes: ['email',  'name', 'phone', 'position', 'type'],
                     where: {
                         [Op.or]: [
                             { email: email },
                             { phone: email }
                         ]
                     },
+                    include: [
+                        {
+                            model: db.Position,
+                            as: 'positionData',
+                            attributes: ['chucvu', 'money']
+                        }
+                    ],
                     raw: true
                 });
 
@@ -106,7 +147,7 @@ let Login = (email, password) => {
                 }
 
                 // 🚫 Chặn nếu type = 1
-                if (user.type === 1) {
+                if (user.type === 2) {
                     userData.errCode = 4;
                     userData.errMessage = "Tài khoản của bạn đã bị khóa";
                     return resolve(userData);
@@ -153,11 +194,103 @@ let checkUserEmail = (userEmail) => {
     })
 }
 
+// get all
+let getall = (keyword) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let condition = {};
 
+            if (keyword && keyword.trim() !== '') {
+                condition = {
+                    [Op.or]: [
+                        { name: { [Op.like]: `%${keyword}%` } },
+                        { phone: { [Op.like]: `%${keyword}%` } }
+                    ]
+                };
+            }
 
+            let users = await db.User.findAll({
+                attributes: ['id', 'name', 'phone', 'position'],
+                include: [
+                    {
+                        model: db.Position,
+                        as: 'positionData',
+                        attributes: ['chucvu', 'money']
+                    }
+                ],
+                where: condition,
+                order: [["createdAt", "DESC"]]
+            });
 
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+                data: users
+            });
+        } catch (error) {
+            reject({
+                errCode: 1,
+                errMessage: 'Server error',
+                data: []
+            });
+        }
+    });
+};
+
+let getUserById = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!id) {
+                return resolve({
+                    errCode: 2,
+                    errMessage: 'Missing required parameter',
+                    data: null
+                });
+            }
+
+            let user = await db.User.findOne({
+                where: { id: id },
+                attributes: {
+                        exclude: ['password']
+                        },
+                include: [
+                    {
+                        model: db.Position,
+                        as: 'positionData',
+                        attributes: ['chucvu', 'money']
+                    }
+                ],
+                raw: true,
+                nest: true
+            });
+
+            if (!user) {
+                return resolve({
+                    errCode: 1,
+                    errMessage: 'User not found',
+                    data: null
+                });
+            }
+
+            resolve({
+                errCode: 0,
+                errMessage: 'OK',
+                data: user
+            });
+
+        } catch (error) {
+            reject({
+                errCode: 3,
+                errMessage: 'Server error',
+                data: null
+            });
+        }
+    });
+};
 
 module.exports = {
     Login: Login,
-    create : create
+    create : create,
+    getall: getall,
+    getUserById: getUserById
 }
