@@ -5,6 +5,7 @@
 
     li {
         list-style: none;
+        cursor: pointer;
         margin-top: 5px;
         width: 100%;
         padding: 5px 10px;
@@ -66,6 +67,9 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        
+
         &:hover i.fa-trash{
             display: block;
         }
@@ -98,6 +102,29 @@
         box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
         padding: 10px 20px;
         overflow-y: auto;
+        position: relative;
+
+        .bangluong-info{
+            display: flex;
+            flex-direction: column;
+
+            .thuviec{
+                background-color: orange;
+                padding: 5px 10px;
+                color: white;
+                border-radius: 3px;
+                width: max-content;
+            }
+        }
+
+        .close{
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 17px;
+            padding: 5px 10px;
+            color: red;
+        }
 
 
         .ModalNhansu-header{
@@ -168,4 +195,49 @@
             }
         }
     }
+
+    .lichlam-container{
+        width: 98%;
+        margin-top: 100px;
+        background-color: white;
+        height: max-content;
+        max-height: 500px;
+        border-radius: 5px;
+        box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+        padding: 10px 20px;
+        overflow-y: auto;
+        position: relative;
+        
+        .header{
+            width: 100%;
+            text-align: center;
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .table.table-bordere{
+            font-size: 10px;
+
+            .th-thu{
+                font-size: 10px;
+            }
+
+            .td-name{
+                font-size: 10px;
+            }
+
+            tr {
+                th {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+    }
+}
+
+.aba-add.calendar{
+    top: 60%;
+    background-color: orange;
 }

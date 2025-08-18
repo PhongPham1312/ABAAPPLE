@@ -123,7 +123,7 @@ let Login = (email, password) => {
 
             if (isExist || isExistPhone) {
                 let user = await db.User.findOne({
-                    attributes: ['email',  'name', 'phone', 'position', 'type'],
+                    attributes: ['email', 'password',  'name', 'phone', 'position', 'type'],
                     where: {
                         [Op.or]: [
                             { email: email },
@@ -210,7 +210,7 @@ let getall = (keyword) => {
             }
 
             let users = await db.User.findAll({
-                attributes: ['id', 'name', 'phone', 'position'],
+                attributes: ['id', 'name', 'phone', 'position', 'type'],
                 include: [
                     {
                         model: db.Position,

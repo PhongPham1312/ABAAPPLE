@@ -4,6 +4,7 @@ import thuchu from '../controllers/thuchi'
 import khachhang from '../controllers/khachhang'
 import datmoi from '../controllers/datmoi'
 import position from '../controllers/position'
+import lichlam from '../controllers/lichlam'
 
 
 let router = express.Router();
@@ -38,6 +39,10 @@ let initWebRoutes = (app) => {
     // position
     router.post('/api/create-position', position.createPosition);
     router.get('/api/get-all-positions', position.getAllPositions);
+
+    // lịch làm
+    router.post('/api/create-lichlam', lichlam.createLichlam);
+    router.get("/api/get-lichlam-nextweek", lichlam.getLichlamNextWeek);
 
 
     return app.use("/", router);

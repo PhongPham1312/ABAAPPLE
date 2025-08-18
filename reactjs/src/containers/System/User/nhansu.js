@@ -6,6 +6,7 @@ import CommonUtils from '../../../utils/CommonUtils';
 import { getAllUsers } from '../../../services/userService'; // Adjust the import path as necessary
 import { isEmpty } from 'lodash';
 import ModalNhansu from './Modal/ModalNhansu';
+import Modallichlam from './Modal/Modallichlam';
 
 
 class Nhansu extends Component {
@@ -17,7 +18,8 @@ class Nhansu extends Component {
             keyword: '',
             listUser: [], // Initialize with an empty array
             isShowmodaladd: false,
-            typeModal: ''
+            typeModal: '',
+            openLich: false
         }
     }
     async componentDidMount () {
@@ -101,8 +103,14 @@ class Nhansu extends Component {
         });
     }
 
+    openLenlich = ()  =>{
+        this.setState({
+            openLich: !this.state.openLich
+        })
+    }
+
     render() {
-        const { listUser, isShowmodaladd} = this.state;
+        const { listUser, isShowmodaladd, openLich} = this.state;
         return (
            <div className='aba-container'>
                 <div className='aba-content'>
@@ -136,7 +144,11 @@ class Nhansu extends Component {
                                 listUser.map((item, index) => {
                                     return (
                                         <li className='khachhang-item' key={index} onClick={() => this.openModalAdd('edit', item.id)}>
-                                            <span>{CommonUtils.vietTatChucVu(item.positionData.chucvu)}{' _ '}{CommonUtils.inHoaChuoi(item.name)} {" _ "} {CommonUtils.formatPhoneNumber(item.phone)}</span>
+                                            <span>
+                                                <span>{CommonUtils.vietTatChucVu(item.positionData.chucvu)}
+                                                {' _ '}{CommonUtils.inHoaChuoi(item.name)} {" _ "} 
+                                                {CommonUtils.formatPhoneNumber(item.phone)}</span>
+                                            </span>
                                         </li>
                                     )
                                 })
@@ -152,6 +164,17 @@ class Nhansu extends Component {
                         />
                     }
 
+
+                    {openLich === true && 
+                        <Modallichlam 
+                            openLenlich = {this.openLenlich}
+                        />
+                    }
+
+                </div>
+
+                <div onClick={this.openLenlich} className='aba-add calendar'>
+                        <i className="fa-solid fa-calendar-days"></i>
                 </div>
 
                 <div onClick={() => this.openModalAdd('add', '')} className='aba-add'>

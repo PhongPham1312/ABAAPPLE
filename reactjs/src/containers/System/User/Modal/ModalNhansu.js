@@ -171,7 +171,7 @@ class ModalNhansu extends Component {
         return (
            <div className='ModalNhansu'>
                 <div className='ModalNhansu-container'>
-
+                    <div onClick={this.props.closeModalAdd} className='close'><i class="fa-solid fa-xmark"></i></div>
                     <div className='ModalNhansu-header'>
                         {this.props.typeModal === "add" ? 'Thêm nhân sự' : 'Nhân sự'}
 
@@ -270,7 +270,6 @@ class ModalNhansu extends Component {
                             <div className='ModalNhansu-btn'>
                                 <button onClick={this.handleadd}
                                     className='btn btn-primary' >{this.props.typeModal === "add" ? 'thêm' : 'lưu'}</button>
-                                <button onClick={this.props.closeModalAdd} className='btn btn-sacondary' >hủy</button>
                             </div>
                            </>
                         )
@@ -282,6 +281,8 @@ class ModalNhansu extends Component {
                         (
                             <>
                                 <div className='bangluong-info'>
+                                    {this.state.type === "1" && <span className='thuviec'>đang thử việc</span>}
+
                                     <span>- lương <span style={{fontWeight: "bold"}}>{this.state.money && CommonUtils.formatMoney(this.state.money)}</span> / 1 giờ x ca 4 giờ = <span style={{fontWeight: "bold"}}>{CommonUtils.formatMoney(CommonUtils.nhan2so(this.state.money, 4))}</span></span>
 
                                     {/* tbale */}
